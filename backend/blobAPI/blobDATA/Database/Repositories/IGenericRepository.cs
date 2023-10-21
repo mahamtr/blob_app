@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using blobCORE.Entities;
 
 namespace blobDATA.Database.Repositories;
@@ -9,4 +10,5 @@ public interface IGenericRepository<T> where T : BaseEntity
     void Insert(T entity);
     void Update(T entity);
     void Delete(T entity);
+    T? FilterSingle(Expression<Func<T, bool>> predicate);
 }

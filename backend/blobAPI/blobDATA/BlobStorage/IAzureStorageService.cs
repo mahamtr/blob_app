@@ -7,6 +7,7 @@ public interface IAzureStorageService
 {
     Task<BlobResponseDto> UploadAsync(IFormFile file);
     Task<BlobDto> DownloadAsync(string blobFilename);
+    Task<Uri> GenerateSasUri(string blobFilename);
     Task<BlobResponseDto> DeleteAsync(string blobFilename);
     Task<List<BlobDto>> ListAsync();
 }

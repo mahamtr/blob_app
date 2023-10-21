@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using blobCORE.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,5 +43,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         if (entity == null) throw new ArgumentNullException("entity");
         entities.Remove(entity);
         context.SaveChanges();
+    }
+
+    public T? FilterSingle(Expression<Func<T, bool>> predicate)
+    {
+        return entities.FirstOrDefault(predicate);
     }
 }

@@ -1,3 +1,4 @@
+using blobCORE.Commands;
 using blobCORE.Entities;
 using blobCORE.Queries;
 using MediatR;
@@ -10,36 +11,22 @@ namespace blobAPI.Controllers;
 public class BlobController : ControllerBase
 {
     private readonly IMediator _mediator;
-
     public BlobController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     [HttpGet("GetAllBlobRecords")]
-    public async Task<List<BlobRecord>> Get()=> await _mediator.Send(new GetAllBlobRecords());
+    public async Task<List<BlobRecord>> Get()=> await _mediator.Send(new GetAllBlobRecordsQuery());
 
-    // [HttpPost("UploadBlobRecords")]
-    // public async Task<int> Upload(IFormFile file)
-    // {
-    //     // var response = await _storageService.UploadAsync(file);
-    //
-    //     return 1;
-    //
-    // }
-    //
-    // [HttpGet("GetDownloadUriById")]
-    // public async Task<string> Download(Guid Id)
-    // {
-    //     return "";
-    // }
-    //
-    // [HttpDelete("filename")]
-    // public async Task<IActionResult> Delete(string filename)
-    // {
-    //     var response = await _storageService.DeleteAsync(filename);
-    //
-    //     return StatusCode(response.Error ? StatusCodes.Status500InternalServerError : StatusCodes.Status200OK,
-    //         response.Status);
-    // }
+    [HttpPost("UploadBlobRecords")]
+    public async Task UploadBlobRecords(List<IFormFile> files) => await _mediator.Send(new UploadFilesCommand {Files = files});
+
+    [HttpPost("GenerateSasUris")]
+    public async Task<List<Uri>> GenerateSasUris(string[] fileNames) => await _mediator.Send(new GenerateSasUrisQuery {FileNames = fileNames});
+
+    [HttpDelete("BlobRecordDelete")]
+    public async Task DeleteBlobRecords(string[] fileNames) =>
+        await _mediator.Send(new DeleteBlobRecordCommand { Files = fileNames });
+    
 }

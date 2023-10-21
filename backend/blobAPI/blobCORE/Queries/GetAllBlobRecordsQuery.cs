@@ -3,7 +3,7 @@ using MediatR;
 
 namespace blobCORE.Queries;
 
-public class GetAllBlobRecords : IRequest<List<BlobRecord>>
+public class GetAllBlobRecordsQuery : IRequest<List<BlobRecord>>
 {
     
 }

@@ -1,6 +1,7 @@
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Sas;
 using blobCORE.DTOs;
 using dotenv.net;
 using Microsoft.AspNetCore.Http;
@@ -12,11 +13,12 @@ public class AzureStorageService : IAzureStorageService
 {
     private readonly BlobContainerClient _blobContainerClient;
     private readonly ILogger<AzureStorageService> _logger;
+    private IDictionary<string,string> envVars = DotEnv.Read();
+
 
     public AzureStorageService(ILogger<AzureStorageService> logger)
     {
         _logger = logger;
-        var envVars = DotEnv.Read();
         var blobContainerName = envVars["blob_container_name"]; 
         var blobConnectionString = envVars["blob_storage_connection_string"]; 
         _blobContainerClient =new BlobContainerClient(blobConnectionString, blobContainerName);    }
@@ -87,6 +89,29 @@ public class AzureStorageService : IAzureStorageService
             when (ex.ErrorCode == BlobErrorCode.BlobNotFound)
         {
             _logger.LogError($"File {blobFilename} was not found.");
+        }
+
+        return null;
+    }
+
+    public async Task<Uri> GenerateSasUri(string blobFilename)
+    {
+        var client = _blobContainerClient;
+
+        try
+        {
+            var file = client.GetBlobClient(blobFilename);
+            if (await file.ExistsAsync())
+            {
+                var builder = new BlobSasBuilder(BlobSasPermissions.Read, 
+                    DateTimeOffset.Now.AddMinutes(double.Parse(envVars["lifetimeSasUriMinutes"])));
+                var sasUri = file.GenerateSasUri(builder);
+                return sasUri;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Unhandled Exception. ID: {ex.StackTrace} - Message: {ex.Message}");
         }
 
         return null;

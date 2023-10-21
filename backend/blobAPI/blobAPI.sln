@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "blobAPI", "blobAPI\blobAPI.csproj", "{5141458E-C430-4495-83B0-54905BC6C489}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "blobDATA", "blobDATA\blobDATA.csproj", "{A08B6FFD-7F20-486F-866B-B6ADF24AC9C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "blobCORE", "blobCORE\blobCORE.csproj", "{93088319-00FA-471B-BDE2-43EB17921A82}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5141458E-C430-4495-83B0-54905BC6C489}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5141458E-C430-4495-83B0-54905BC6C489}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5141458E-C430-4495-83B0-54905BC6C489}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5141458E-C430-4495-83B0-54905BC6C489}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A08B6FFD-7F20-486F-866B-B6ADF24AC9C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A08B6FFD-7F20-486F-866B-B6ADF24AC9C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A08B6FFD-7F20-486F-866B-B6ADF24AC9C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A08B6FFD-7F20-486F-866B-B6ADF24AC9C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93088319-00FA-471B-BDE2-43EB17921A82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93088319-00FA-471B-BDE2-43EB17921A82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93088319-00FA-471B-BDE2-43EB17921A82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93088319-00FA-471B-BDE2-43EB17921A82}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

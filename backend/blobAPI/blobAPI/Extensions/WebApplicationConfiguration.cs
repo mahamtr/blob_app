@@ -1,4 +1,3 @@
-using blobCORE.BlobStorageProvider;
 using blobDATA.DataBaseProvider;
 using blobDATA.Services;
 using dotenv.net;
@@ -6,15 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace blobAPI.Extensions;
 
-public static class ServicesConfigurationExtension
+public static class WebApplicationConfiguration
 {
-    public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
+    public static WebApplication SetupMigrations(this WebApplication webApp)
     {
-        builder.Services.AddTransient<IAzureStorageService, AzureStorageService>();
-        builder.Services.AddSingleton<IBlobStorageProvider,blobCORE.BlobStorageProvider.BlobStorageProvider>();
-        var configurationString = DotEnv.Read()["database_connection_string"];
-        builder.Services.AddDbContext<BlobContext>
-            (c => c.UseSqlServer(configurationString));
-        return builder;
+        using var scope = webApp.Services.CreateScope();
+        var services = scope.ServiceProvider;
+
+        var context = services.GetRequiredService<BlobContext>();    
+        context.Database.Migrate();
+
+        return webApp;
     }
 }

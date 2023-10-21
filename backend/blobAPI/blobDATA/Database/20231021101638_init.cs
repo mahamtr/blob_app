@@ -1,9 +1,8 @@
-﻿using System;
+﻿#nullable disable
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
-namespace blobDATA.DataBaseProvider
+namespace blobDATA.Database
 {
     /// <inheritdoc />
     public partial class init : Migration

@@ -1,7 +1,7 @@
 using blobCORE.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace blobDATA.DataBaseProvider;
+namespace blobDATA.Database;
 
 public class BlobContext : DbContext
 {

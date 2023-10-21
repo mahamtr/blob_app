@@ -6,7 +6,7 @@ using dotenv.net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace blobDATA.Services;
+namespace blobDATA.BlobStorage;
 
 public class AzureStorageService : IAzureStorageService
 {

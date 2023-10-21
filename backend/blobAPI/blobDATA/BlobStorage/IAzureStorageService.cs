@@ -1,7 +1,7 @@
 using blobCORE.DTOs;
 using Microsoft.AspNetCore.Http;
 
-namespace blobDATA.Services;
+namespace blobDATA.BlobStorage;
 
 public interface IAzureStorageService
 {

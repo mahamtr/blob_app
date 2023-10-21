@@ -1,51 +1,45 @@
-using blobDATA.Services;
+using blobCORE.Entities;
+using blobCORE.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace blobAPI.Controllers;
+
 [ApiController]
 [Route("[controller]")]
 public class BlobController : ControllerBase
 {
-    private readonly IAzureStorageService _storageService;
+    private readonly IMediator _mediator;
 
-        public BlobController(IAzureStorageService storageService)
-        {
-            _storageService = storageService;
-        }
+    public BlobController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
 
-        [HttpGet(nameof(Get))]
-        public async Task<IActionResult> Get()
-        {
-            var files = await _storageService.ListAsync();
+    [HttpGet("GetAllBlobRecords")]
+    public async Task<List<BlobRecord>> Get()=> await _mediator.Send(new GetAllBlobRecords());
 
-            return StatusCode(StatusCodes.Status200OK, files);
-        }
-
-        [HttpPost(nameof(Upload))]
-        public async Task<IActionResult> Upload(IFormFile file)
-        {
-            var response = await _storageService.UploadAsync(file);
-
-            return response.Error == true ? StatusCode(StatusCodes.Status500InternalServerError, response.Status) : StatusCode(StatusCodes.Status200OK, response);
-        }
-
-        [HttpGet("{filename}")]
-        public async Task<IActionResult> Download(string filename)
-        {
-            var file = await _storageService.DownloadAsync(filename);
-
-            return file == null
-                ? StatusCode(StatusCodes.Status500InternalServerError, $"File {filename} could not be downloaded.")
-                :
-                File(file.Content, file.ContentType, file.Name);
-        }
-
-        [HttpDelete("filename")]
-        public async Task<IActionResult> Delete(string filename)
-        {
-            var response = await _storageService.DeleteAsync(filename);
-
-            return StatusCode(response.Error ?
-                StatusCodes.Status500InternalServerError : StatusCodes.Status200OK, response.Status);
-        }
+    // [HttpPost("UploadBlobRecords")]
+    // public async Task<int> Upload(IFormFile file)
+    // {
+    //     // var response = await _storageService.UploadAsync(file);
+    //
+    //     return 1;
+    //
+    // }
+    //
+    // [HttpGet("GetDownloadUriById")]
+    // public async Task<string> Download(Guid Id)
+    // {
+    //     return "";
+    // }
+    //
+    // [HttpDelete("filename")]
+    // public async Task<IActionResult> Delete(string filename)
+    // {
+    //     var response = await _storageService.DeleteAsync(filename);
+    //
+    //     return StatusCode(response.Error ? StatusCodes.Status500InternalServerError : StatusCodes.Status200OK,
+    //         response.Status);
+    // }
 }

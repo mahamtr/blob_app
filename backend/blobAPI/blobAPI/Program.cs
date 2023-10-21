@@ -10,7 +10,7 @@ builder.Host.UseSerilog();
 // Add services to the container.
 builder.Services.AddTransient<IAzureStorageService, AzureStorageService>();
 builder.Services.AddSingleton<IBlobStorageProvider,BlobStorageProvider>();
-builder.Services.
+// builder.Services.
 // builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -27,7 +27,7 @@ public class GenerateSasUrisQueryHandler : IRequestHandler<GenerateSasUrisQuery,
         {
             try
             {
-               var uri = await _azureStorageService.GenerateSasUri(fileName);
+               var uri = await _azureStorageService.GenerateSasUri(fileName,request.MinutesToExpire);
                _mediator.Publish(new GeneratedSasUriNotification(){FileName = fileName});
                response.Add(uri);
             }

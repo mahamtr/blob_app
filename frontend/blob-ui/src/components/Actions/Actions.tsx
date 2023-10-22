@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from "react";
+import React, { Dispatch, FC, SetStateAction, useState } from "react";
 import styles from "./Actions.module.css";
 import { Button, Select, Space, Typography } from "antd";
 import { DownloadOutlined, DeleteOutlined } from "@ant-design/icons";
@@ -12,6 +12,7 @@ interface ActionsProps {
 }
 
 const Actions: FC<ActionsProps> = ({ selectedRows, setSasUris, fetchData }) => {
+  const [selectedTimeToExpire, setSelectedTimeToExpire] = useState("5");
   const { axios: downloadAxios, loading: downloadLoading } = useHttpClient({
     onSuccess: (data) => {
       setSasUris(data);
@@ -33,14 +34,14 @@ const Actions: FC<ActionsProps> = ({ selectedRows, setSasUris, fetchData }) => {
   const onDownloadClick = () => {
     const data = selectedRows.map((a) => a.name);
     downloadAxios({
-      url: "/Blob/GenerateSasUris",
+      url: "/Blob/GenerateSasUris/" + selectedTimeToExpire,
       method: "POST",
       body: data,
       headers: null,
     });
   };
   const onDeleteClick = () => {
-    const data = [selectedRows.map((a) => a.name)];
+    const data = selectedRows.map((a) => a.name);
     deleteAxios({
       url: "/Blob/BlobRecordDelete",
       method: "DELETE",
@@ -63,7 +64,8 @@ const Actions: FC<ActionsProps> = ({ selectedRows, setSasUris, fetchData }) => {
         <Select
           defaultValue="5"
           style={{ width: 100 }}
-          // onChange={handleChange}
+          onChange={setSelectedTimeToExpire}
+          value={selectedTimeToExpire}
           options={[
             {
               label: "Minutes",
@@ -76,11 +78,11 @@ const Actions: FC<ActionsProps> = ({ selectedRows, setSasUris, fetchData }) => {
             {
               label: "Hours",
               options: [
-                { label: "1", value: "1" },
-                { label: "3", value: "3" },
-                { label: "6", value: "6" },
-                { label: "12", value: "12" },
-                { label: "24", value: "24" },
+                { label: "1", value: "60" },
+                { label: "3", value: "180" },
+                { label: "6", value: "360" },
+                { label: "12", value: "720" },
+                { label: "24", value: "1440" },
               ],
             },
           ]}

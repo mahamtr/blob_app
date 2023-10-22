@@ -27,8 +27,8 @@ public class BlobController : ControllerBase
         await _mediator.Send(new UploadFilesCommand { Files = files });
     }
 
-    [HttpPost("GenerateSasUris")]
-    public async Task<List<Uri>> GenerateSasUris(string[] fileNames) => await _mediator.Send(new GenerateSasUrisQuery {FileNames = fileNames});
+    [HttpPost("GenerateSasUris/{minutes}")]
+    public async Task<List<Uri>> GenerateSasUris(string[] fileNames,int minutes) => await _mediator.Send(new GenerateSasUrisQuery {FileNames = fileNames,MinutesToExpire = minutes});
 
     [HttpDelete("BlobRecordDelete")]
     public async Task DeleteBlobRecords(string[] fileNames) =>

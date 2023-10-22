@@ -5,7 +5,9 @@ import Download from "./Download";
 
 describe("<Download />", () => {
   test("it should mount", () => {
-    render(<Download sasUris={[]} />);
+    const [sasUris, setSasUris] = useState<string[]>([]);
+
+    render(<Download sasUris={sasUris} setSasUris={setSasUris} />);
 
     const download = screen.getByTestId("Download");
 

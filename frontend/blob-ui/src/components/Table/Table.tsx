@@ -4,6 +4,8 @@ import type { ColumnsType } from "antd/es/table";
 import { Table as AntTable } from "antd";
 import useHttpClient from "../../services/HttpClient";
 import BlobRecord from "../../models/BlobRecord";
+import { getFileTypeIconProps } from "@fluentui/react-file-type-icons";
+import { Icon } from "@fluentui/react/lib/Icon";
 
 interface TableProps {
   data: BlobRecord[];
@@ -18,6 +20,20 @@ const columns: ColumnsType<BlobRecord> = [
   {
     title: "Type",
     dataIndex: "type",
+  },
+  {
+    title: "Icon",
+    dataIndex: "type",
+    render: (type: string) => {
+      return (
+        <Icon
+          {...getFileTypeIconProps({
+            extension: type.replace(".", ""),
+            size: 48,
+          })}
+        />
+      );
+    },
   },
   {
     title: "Uploaded Date and Time",
@@ -60,6 +76,7 @@ const Table: FC<TableProps> = ({ data, setSelectedRows }) => {
         }}
         columns={columns}
         dataSource={data}
+        rowKey={"name"}
       />{" "}
     </div>
   );

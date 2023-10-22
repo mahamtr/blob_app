@@ -94,7 +94,7 @@ public class AzureStorageService : IAzureStorageService
         return null;
     }
 
-    public async Task<Uri> GenerateSasUri(string blobFilename)
+    public async Task<Uri> GenerateSasUri(string blobFilename, int minutesToExpire)
     {
         var client = _blobContainerClient;
 
@@ -104,7 +104,7 @@ public class AzureStorageService : IAzureStorageService
             if (await file.ExistsAsync())
             {
                 var builder = new BlobSasBuilder(BlobSasPermissions.Read, 
-                    DateTimeOffset.Now.AddMinutes(double.Parse(envVars["lifetimeSasUriMinutes"])));
+                    DateTimeOffset.Now.AddMinutes(minutesToExpire));
                 var sasUri = file.GenerateSasUri(builder);
                 return sasUri;
             }

@@ -1,18 +1,26 @@
-import React, { FC } from "react";
+import React, { Dispatch, FC, SetStateAction } from "react";
 import styles from "./Download.module.css";
-import { Card, List, Typography } from "antd";
+import { Button, Card, List, Typography } from "antd";
 
 interface DownloadProps {
   sasUris: string[];
+  setSasUris: Dispatch<SetStateAction<string[]>>;
 }
 
-const Download: FC<DownloadProps> = ({ sasUris }) => {
+const Download: FC<DownloadProps> = ({ sasUris, setSasUris }) => {
   console.log(sasUris);
 
   return (
     <div className={styles.Download} data-testid="Download">
       <List
-        header={<div>Click any link to start download</div>}
+        header={
+          <div>
+            Click any link to start download{" "}
+            <Button type="primary" onClick={() => setSasUris([])}>
+              Clear
+            </Button>
+          </div>
+        }
         dataSource={sasUris}
         renderItem={(item) => (
           <List.Item>

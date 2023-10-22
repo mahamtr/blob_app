@@ -2,12 +2,19 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 interface HttpClientProps {
-  onSuccess: (data: any) => {};
-  onError: (data: any) => {};
+  onSuccess: (data: any) => void;
+  onError: (data: any) => void;
 }
 
+interface AxiosDataInterface {
+  url: string;
+  method: string;
+  body: any | any[] | null;
+  headers: object | null;
+}
+const baseUrl = process.env.REACT_APP_BACKEND_URL;
 const useHttpClient = (props: HttpClientProps) => {
-  const [axiosData, setAxiosData] = useState({
+  const [axiosData, setAxiosData] = useState<AxiosDataInterface>({
     url: "",
     method: "GET",
     body: null,
@@ -19,6 +26,7 @@ const useHttpClient = (props: HttpClientProps) => {
   const [status, setStatus] = useState<number | null>(null);
 
   const sourceToken = axios.CancelToken.source();
+
   const fetchApi = async () => {
     setLoading(true);
     setData(null);
@@ -28,7 +36,7 @@ const useHttpClient = (props: HttpClientProps) => {
       const data = axiosData?.body ? { data: axiosData?.body } : {};
       const headers = axiosData?.headers ? { headers: axiosData?.headers } : {};
       const response = await axios({
-        url: axiosData.url,
+        url: baseUrl + axiosData.url,
         method: axiosData.method ?? "GET",
         cancelToken: sourceToken.token,
         ...data,
@@ -60,4 +68,4 @@ const useHttpClient = (props: HttpClientProps) => {
   return { axios: setAxiosData, data, error, loading, status };
 };
 
-export default useAxios;
+export default useHttpClient;

@@ -1,71 +1,41 @@
-import React, { FC } from "react";
+import React, { Dispatch, FC, SetStateAction, useEffect } from "react";
 import styles from "./Table.module.css";
 import type { ColumnsType } from "antd/es/table";
 import { Table as AntTable } from "antd";
+import useHttpClient from "../../services/HttpClient";
+import BlobRecord from "../../models/BlobRecord";
 
-interface TableProps {}
-
-interface DataType {
-  key: React.Key;
-  name: string;
-  age: number;
-  address: string;
+interface TableProps {
+  data: BlobRecord[];
+  setSelectedRows: Dispatch<SetStateAction<BlobRecord[]>>;
 }
 
-const columns: ColumnsType<DataType> = [
+const columns: ColumnsType<BlobRecord> = [
   {
     title: "Name",
     dataIndex: "name",
     render: (text: string) => <a>{text}</a>,
   },
   {
-    title: "Age",
-    dataIndex: "age",
+    title: "Type",
+    dataIndex: "type",
   },
   {
-    title: "Address",
-    dataIndex: "address",
+    title: "Uploaded Date and Time",
+    dataIndex: "uploadDateTime",
+  },
+  {
+    title: "Resource Uri",
+    dataIndex: "uri",
   },
 ];
 
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Disabled User",
-    age: 99,
-    address: "Sydney No. 1 Lake Park",
-  },
-];
-
-const Table: FC<TableProps> = () => {
+const Table: FC<TableProps> = ({ data, setSelectedRows }) => {
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
+    onChange: (selectedRowKeys: React.Key[], selectedRows: BlobRecord[]) => {
+      setSelectedRows(selectedRows);
     },
-    getCheckboxProps: (record: DataType) => ({
-      disabled: record.name === "Disabled User", // Column configuration not to be checked
+    getCheckboxProps: (record: BlobRecord) => ({
       name: record.name,
     }),
   };

@@ -35,5 +35,8 @@ app.MapControllers();
 
 DotEnv.Load(options: new DotEnvOptions(ignoreExceptions: false));
 
-
+app.UseCors(builder => builder
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 app.Run();

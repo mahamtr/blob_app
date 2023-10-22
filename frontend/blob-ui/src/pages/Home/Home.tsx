@@ -8,6 +8,7 @@ import Download from "../../components/Download/Download";
 import useHttpClient from "../../services/HttpClient";
 import BlobRecord from "../../models/BlobRecord";
 import { LoadContext } from "../../LoadContext";
+import LoadingOverlay from "react-loading-overlay-ts";
 
 interface HomeProps {}
 
@@ -61,6 +62,9 @@ const Home: FC<HomeProps> = () => {
 
   return (
     <LoadContext.Provider value={{ isLoading, setIsLoading }}>
+      <LoadingOverlay active={isLoading} spinner text="Loading your content...">
+        <div className={isLoading ? styles.Show : styles.Hide} />
+      </LoadingOverlay>
       <div className={styles.Home} data-testid="Home">
         <div className={styles.Row}>
           <Filter filterValue={filterValue} setFilterValue={setFilterValue} />

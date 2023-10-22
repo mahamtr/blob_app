@@ -19,7 +19,7 @@ const Home: FC<HomeProps> = () => {
   const [selectedRows, setSelectedRows] = useState<BlobRecord[]>([]);
   const [filterValue, setFilterValue] = useState<string>("");
   const [sasUris, setSasUris] = useState<string[]>([]);
-  const { axios } = useHttpClient({
+  const { axios, loading } = useHttpClient({
     onSuccess: (data) => {
       setTableData(data);
     },
@@ -57,8 +57,8 @@ const Home: FC<HomeProps> = () => {
   }, [filterValue]);
 
   useEffect(() => {
-    console.log("laoding state is " + isLoading);
-  }, [isLoading]);
+    setIsLoading(loading);
+  }, [loading]);
 
   return (
     <LoadContext.Provider value={{ isLoading, setIsLoading }}>

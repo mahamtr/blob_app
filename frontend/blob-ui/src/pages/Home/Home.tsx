@@ -7,16 +7,18 @@ import Upload from "../../components/Upload/Upload";
 import Download from "../../components/Download/Download";
 import useHttpClient from "../../services/HttpClient";
 import BlobRecord from "../../models/BlobRecord";
+import { LoadContext } from "../../LoadContext";
 
 interface HomeProps {}
 
 const Home: FC<HomeProps> = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [tableData, setTableData] = useState<BlobRecord[]>([]);
   const [filteredTableData, setFilteredTableData] = useState<BlobRecord[]>([]);
   const [selectedRows, setSelectedRows] = useState<BlobRecord[]>([]);
   const [filterValue, setFilterValue] = useState<string>("");
   const [sasUris, setSasUris] = useState<string[]>([]);
-  const { axios, data, error, loading, status } = useHttpClient({
+  const { axios } = useHttpClient({
     onSuccess: (data) => {
       setTableData(data);
     },
@@ -53,22 +55,28 @@ const Home: FC<HomeProps> = () => {
     );
   }, [filterValue]);
 
+  useEffect(() => {
+    console.log("laoding state is " + isLoading);
+  }, [isLoading]);
+
   return (
-    <div className={styles.Home} data-testid="Home">
-      <div className={styles.Row}>
-        <Filter filterValue={filterValue} setFilterValue={setFilterValue} />
-        <Actions
-          selectedRows={selectedRows}
-          setSasUris={setSasUris}
-          fetchData={fetchData}
-        />
+    <LoadContext.Provider value={{ isLoading, setIsLoading }}>
+      <div className={styles.Home} data-testid="Home">
+        <div className={styles.Row}>
+          <Filter filterValue={filterValue} setFilterValue={setFilterValue} />
+          <Actions
+            selectedRows={selectedRows}
+            setSasUris={setSasUris}
+            fetchData={fetchData}
+          />
+        </div>
+        <Table data={filteredTableData} setSelectedRows={setSelectedRows} />
+        <div className={styles.Row}>
+          <Upload fetchData={fetchData} />
+          <Download sasUris={sasUris} setSasUris={setSasUris} />
+        </div>
       </div>
-      <Table data={filteredTableData} setSelectedRows={setSelectedRows} />
-      <div className={styles.Row}>
-        <Upload fetchData={fetchData} />
-        <Download sasUris={sasUris} setSasUris={setSasUris} />
-      </div>
-    </div>
+    </LoadContext.Provider>
   );
 };
 

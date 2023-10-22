@@ -51,6 +51,10 @@ const columns: ColumnsType<BlobRecord> = [
     },
   },
   {
+    title: "Number of Downloads",
+    dataIndex: "timesDownloaded",
+  },
+  {
     title: "Resource Uri",
     dataIndex: "uri",
   },
@@ -69,7 +73,7 @@ const Table: FC<TableProps> = ({ data, setSelectedRows }) => {
   return (
     <div className={styles.Table} data-testid="Table">
       <AntTable
-        pagination={{ pageSize: 10 }}
+        pagination={{ pageSize: 3 }}
         rowSelection={{
           type: "checkbox",
           ...rowSelection,

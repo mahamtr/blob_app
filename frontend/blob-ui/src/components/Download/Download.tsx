@@ -8,8 +8,6 @@ interface DownloadProps {
 }
 
 const Download: FC<DownloadProps> = ({ sasUris, setSasUris }) => {
-  console.log(sasUris);
-
   return (
     <div className={styles.Download} data-testid="Download">
       <List

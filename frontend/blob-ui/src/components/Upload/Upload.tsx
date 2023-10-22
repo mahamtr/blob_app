@@ -1,23 +1,30 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import styles from "./Upload.module.css";
 import Dragger from "antd/es/upload/Dragger";
 import { InboxOutlined } from "@ant-design/icons";
+import { LoadContext } from "../../LoadContext";
 
 interface UploadProps {
   fetchData: () => void;
 }
 
 const Upload: FC<UploadProps> = ({ fetchData }) => {
+  const { isLoading, setIsLoading } = useContext(LoadContext);
+
   const props = {
     name: "file",
     multiple: true,
     action: process.env.REACT_APP_BACKEND_URL + "/Blob/UploadBlobRecords",
     onChange(info: any) {
       const { status } = info.file;
+      if (status == "uploading") {
+        setIsLoading(true);
+      }
       if (status !== "uploading") {
         console.log(info.file, info.fileList);
       }
       if (status === "done") {
+        setIsLoading(false);
         console.log(`${info.file.name} file uploaded successfully.`);
         fetchData();
       } else if (status === "error") {

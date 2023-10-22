@@ -1,9 +1,17 @@
-import React, { Dispatch, FC, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import styles from "./Actions.module.css";
 import { Button, Select, Space, Typography } from "antd";
 import { DownloadOutlined, DeleteOutlined } from "@ant-design/icons";
 import BlobRecord from "../../models/BlobRecord";
 import useHttpClient from "../../services/HttpClient";
+import { LoadContext } from "../../LoadContext";
 
 interface ActionsProps {
   selectedRows: BlobRecord[];
@@ -12,10 +20,13 @@ interface ActionsProps {
 }
 
 const Actions: FC<ActionsProps> = ({ selectedRows, setSasUris, fetchData }) => {
+  const { isLoading, setIsLoading } = useContext(LoadContext);
+
   const [selectedTimeToExpire, setSelectedTimeToExpire] = useState("5");
   const { axios: downloadAxios, loading: downloadLoading } = useHttpClient({
     onSuccess: (data) => {
       setSasUris(data);
+      fetchData();
     },
     onError: (error) => {
       console.log(error);
@@ -49,6 +60,15 @@ const Actions: FC<ActionsProps> = ({ selectedRows, setSasUris, fetchData }) => {
       headers: null,
     });
   };
+
+  useEffect(() => {
+    if (deleteLoading || downloadLoading) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [deleteLoading, downloadLoading]);
+
   return (
     <div className={styles.Actions} data-testid="Actions">
       <Space wrap>

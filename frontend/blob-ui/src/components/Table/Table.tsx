@@ -14,7 +14,6 @@ const columns: ColumnsType<BlobRecord> = [
   {
     title: "Name",
     dataIndex: "name",
-    render: (text: string) => <a>{text}</a>,
   },
   {
     title: "Type",
@@ -23,6 +22,17 @@ const columns: ColumnsType<BlobRecord> = [
   {
     title: "Uploaded Date and Time",
     dataIndex: "uploadDateTime",
+    render: (date: string) => {
+      var utc = new Date(date);
+      var offset = utc.getTimezoneOffset();
+      var local = new Date(utc.getTime() + offset * 60000);
+      return (
+        <p>
+          {local.toLocaleDateString("en-US")}{" "}
+          {local.toLocaleTimeString("en-US")}
+        </p>
+      );
+    },
   },
   {
     title: "Resource Uri",

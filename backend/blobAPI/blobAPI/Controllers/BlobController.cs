@@ -20,7 +20,12 @@ public class BlobController : ControllerBase
     public async Task<List<BlobRecord>> Get()=> await _mediator.Send(new GetAllBlobRecordsQuery());
 
     [HttpPost("UploadBlobRecords")]
-    public async Task UploadBlobRecords(List<IFormFile> files) => await _mediator.Send(new UploadFilesCommand {Files = files});
+    public async Task UploadBlobRecords()
+    {
+        var formCollection = await Request.ReadFormAsync();
+        var files = formCollection.Files.ToList();
+        await _mediator.Send(new UploadFilesCommand { Files = files });
+    }
 
     [HttpPost("GenerateSasUris")]
     public async Task<List<Uri>> GenerateSasUris(string[] fileNames) => await _mediator.Send(new GenerateSasUrisQuery {FileNames = fileNames});

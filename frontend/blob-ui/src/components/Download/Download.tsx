@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styles from "./Download.module.css";
-import { List, Typography } from "antd";
+import { Card, List, Typography } from "antd";
 
 interface DownloadProps {
   sasUris: string[];
@@ -12,19 +12,16 @@ const Download: FC<DownloadProps> = ({ sasUris }) => {
   return (
     <div className={styles.Download} data-testid="Download">
       <List
-        header={<div>Header</div>}
-        footer={<div>Footer</div>}
-        bordered
+        header={<div>Click any link to start download</div>}
         dataSource={sasUris}
         renderItem={(item) => (
           <List.Item>
             <Typography.Text mark>
-              {" "}
               <a href={item}>{item} </a>
             </Typography.Text>
           </List.Item>
         )}
-      />{" "}
+      />
     </div>
   );
 };

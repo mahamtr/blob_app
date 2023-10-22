@@ -1,6 +1,6 @@
 import React, { Dispatch, FC, SetStateAction } from "react";
 import styles from "./Actions.module.css";
-import { Button, Space } from "antd";
+import { Button, Select, Space, Typography } from "antd";
 import { DownloadOutlined, DeleteOutlined } from "@ant-design/icons";
 import BlobRecord from "../../models/BlobRecord";
 import useHttpClient from "../../services/HttpClient";
@@ -59,6 +59,32 @@ const Actions: FC<ActionsProps> = ({ selectedRows, setSasUris, fetchData }) => {
         >
           Download Selection
         </Button>
+        <Typography.Text>Expiration Time</Typography.Text>
+        <Select
+          defaultValue="5"
+          style={{ width: 100 }}
+          // onChange={handleChange}
+          options={[
+            {
+              label: "Minutes",
+              options: [
+                { label: "5", value: "5" },
+                { label: "10", value: "10" },
+                { label: "30", value: "30" },
+              ],
+            },
+            {
+              label: "Hours",
+              options: [
+                { label: "1", value: "1" },
+                { label: "3", value: "3" },
+                { label: "6", value: "6" },
+                { label: "12", value: "12" },
+                { label: "24", value: "24" },
+              ],
+            },
+          ]}
+        />
 
         <Button
           type="primary"
